@@ -1,0 +1,58 @@
+$border-color: #e7edf3;
+$primary: #137fec;
+$text-color: #0d141b;
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 3rem;
+  border-bottom: 1px solid $border-color;
+  background: #fff;
+
+  .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .logo {
+      width: 24px;
+      height: 24px;
+      background-color: $primary;
+      border-radius: 50%;
+    }
+
+    h2 {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+
+    a {
+      text-decoration: none;
+      color: $text-color;
+      font-weight: 500;
+
+      &.active {
+        color: $primary;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+  }
+}

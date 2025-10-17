@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="header">
+    <span class="material-symbols-outlined icon">insights</span>
+    <h1 class="title">DataTracker</h1>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="header-text">
+        <p class="main-title">Login</p>
+        <p class="subtitle">Welcome back! Please enter your details.</p>
+      </div>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form">
+      <div class="form-container">
+        <label class="form-label">
+          <p class="label-text">Email</p>
+          <input
+            class="form-input"
+            placeholder="johnDoe@gmail..."
+            type="email"
+            formControlName="username"
+          />
+        </label>
+
+        <label class="form-label">
+          <p class="label-text">Password</p>
+          <div class="password-wrapper">
+            <input
+              class="form-input password-input"
+              placeholder="Enter your password"
+              formControlName="password"
+              type="password"
+            />
+            <div class="password-icon-wrapper">
+              <span class="material-symbols-outlined visibility-icon">visibility</span>
+            </div>
+          </div>
+        </label>
+
+        <div class="button-group">
+          <button class="btn btn-primary">
+            <span>Login</span>
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="separator-container">
+      <hr class="separator-line" />
+      <span class="separator-text">No account ? Create one !</span>
+      <hr class="separator-line" />
+    </div>
+
+    <div class="button-group">
+      <button (click)="goRegister()" class="btn btn-primary">
+        <span>Create account</span>
+      </button>
+    </div>
+  </div>
+</div>

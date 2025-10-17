@@ -1,0 +1,133 @@
+$primary: #137fec;
+$light-bg: #f6f7f8;
+$dark-bg: #101922;
+$text-color: #0d141b;
+$text-light: #fff;
+$border-color: #e7edf3;
+$radius: 8px;
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: $light-bg;
+  color: $text-color;
+  margin: 0;
+  padding: 0;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Main content */
+.main {
+  padding: 2rem 3rem;
+  flex: 1;
+
+  .intro {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      color: gray;
+    }
+  }
+
+  .connections {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .connection {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: $radius;
+      padding: 1rem;
+
+      .info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .icon {
+          width: 40px;
+          height: 40px;
+          background-size: cover;
+          background-position: center;
+          border-radius: $radius;
+        }
+
+        span {
+          font-weight: 500;
+        }
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .status {
+        font-size: 0.9rem;
+        &.success {
+          color: #16a34a;
+        }
+        &.error {
+          color: #dc2626;
+        }
+      }
+
+      &.connected {
+        border-color: #16a34a40;
+      }
+
+      &.failed {
+        border-color: #dc262640;
+      }
+    }
+  }
+}
+
+/* Buttons */
+.btn {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: $radius;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+
+  &.primary {
+    background: $primary;
+    color: #fff;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &.secondary {
+    background: #e7edf3;
+    color: $text-color;
+  }
+
+  &.danger {
+    background: #ef4444;
+    color: #fff;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}
