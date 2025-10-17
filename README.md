@@ -1,1 +1,1 @@
-Développement d’un site qui affiche les actualités de manière personnalisée en Python Django et Angular
+Développement d'un site en Django et Angular avec des appels à l'IA pour analyser ses données (Strava, Spotify,...)
