@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth/authService';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SpotifyService } from '../../services/spotifyService';
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './connections.html',
   styleUrls: ['./connections.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,39 +15,26 @@ import { AuthService } from '../../services/auth/authService';
 export class Connections {
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private authService = inject(AuthService);
+  private spotifyService = inject(SpotifyService);
+  private route = inject(ActivatedRoute);
+
   loading = signal(false);
   error = signal<string | null>(null);
-  checkPassword = signal<string | null>(null);
 
-  form = this.fb.group({
-    username: ['', Validators.required],
-    password: ['', Validators.required],
-  });
-
-  submit() {
-    if (this.form.invalid || this.loading()) return;
-
-    this.loading.set(true);
-
-    const { username, password } = this.form.getRawValue();
-    this.authService
-      .register({
-        username: username!,
-        password: password!,
-      })
-      .subscribe({
-        next: () => {
-          this.loading.set(false);
-          this.router.navigateByUrl('/login');
-        },
-        error: (err) => {
-          console.error(err);
-        },
-      });
+  isSpotifyConnected = false;
+  spotifyToken = signal<string | null>(null);
+  ngOnInit() {
+    this.checkSpotifyConnection();
   }
 
-  goLogin() {
-    this.router.navigateByUrl('/login');
+  async checkSpotifyConnection() {
+    if (this.spotifyService.checkToken()) {
+      this.isSpotifyConnected = true;
+    } else {
+      this.isSpotifyConnected = false;
+    }
+  }
+  spotifyLogin() {
+    this.spotifyService.login();
   }
 }

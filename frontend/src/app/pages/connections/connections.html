@@ -29,8 +29,14 @@
               <span>Spotify</span>
             </div>
             <div class="actions">
-              <span class="status success">Connected</span>
-              <button class="btn secondary">Disconnect</button>
+              <button
+                id="spotifyBtn"
+                [ngClass]="{ connected: isSpotifyConnected }"
+                (click)="spotifyLogin()"
+                class="btn primary"
+              >
+                {{ isSpotifyConnected ? 'Connected' : 'Connect to Spotify' }}
+              </button>
             </div>
           </div>
 
@@ -45,38 +51,7 @@
               ></div>
               <span>Strava</span>
             </div>
-            <button class="btn primary">Connect</button>
-          </div>
-
-          <!-- Apple Health -->
-          <div class="connection">
-            <div class="info">
-              <div
-                class="icon"
-                style="
-                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC66iIASN9BixLBjAAl4lE3_i0FNDyqFVnZ3QXHuZQbx8ppucr8xY7KzPqtp71vpTxpFA3-xG-HYLpUGbfOHd2xzhJtmpKAXk_hfxRdWxpjSJzqOgRk951syZ0gqxxH9p0l9_nuqyzCgTnYpWH1hmFfnF-STUis9XDmzgFswLpdbe_twhdEOU5PdJCXwO-NT3LMedsDbWLcfpLTqJiIjznkVjAAZOuHmT0gkp9idkEpKRIg-GAafp_GF8jqR3FKP24XI5qfXiDM6dM');
-                "
-              ></div>
-              <span>Apple Health</span>
-            </div>
-            <button class="btn primary">Connect</button>
-          </div>
-
-          <!-- Google Fit -->
-          <div class="connection failed">
-            <div class="info">
-              <div
-                class="icon"
-                style="
-                  background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCLOXbbCVcpdTEO1yp7ZLBO-wetVmOP-7o6StaomCKbvBMNpqyai_DOarmq8YAGmbmUtKpyfgGjWhSQxkJ45HQsq7n8gmCgmh6gZPv-95xbcFtCijSHqrp0gCJZKIG9PwMkH90xY372DyYc0Fxq8CfMAZWrd8mhu-oox6O_gIfnf1CzAm2ZiCpzeeudVPVHqdhWA_hFhZ0FNwaSSuA7cqYP0mKkMMtVUoVbGQXO7HGVL2DDOVBzuUYStJAXHF0vY8gSIOzjuyOq0ZE');
-                "
-              ></div>
-              <span>Google Fit</span>
-            </div>
-            <div class="actions">
-              <span class="status error">Connection Failed</span>
-              <button class="btn danger">Retry</button>
-            </div>
+            <button class="btn primary">Connect to Strava</button>
           </div>
         </section>
       </main>

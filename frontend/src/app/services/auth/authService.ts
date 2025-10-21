@@ -26,11 +26,11 @@ export class AuthService {
 
   login(login: LoginRequest) {
     return this.http
-      .post<{ token: string }>(`${this.apiBase}${API_ROUTES.auth.login}`, login, {
+      .post<{ access: string }>(`${this.apiBase}${API_ROUTES.auth.token}`, login, {
         responseType: 'json',
       })
       .pipe(
-        tap((response) => this.setToken(response.token)),
+        tap((response) => this.setToken(response.access)),
         catchError((err) => {
           this.isAuthenticated.set(false);
           return throwError(() => err);

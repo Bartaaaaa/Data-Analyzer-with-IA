@@ -131,3 +131,13 @@ body {
     }
   }
 }
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn.connected {
+  background-color: #22c55e;
+  cursor: default;
+  color: white;
+}

@@ -3,6 +3,7 @@ export const API_ROUTES = {
     login: '/login',
     register: '/register',
     checkAuth: '/auth/checkAuth',
+    token: '/token',
   },
   user: {
     getMe: '/user',
@@ -12,6 +13,7 @@ export const API_ROUTES = {
     root: '/demo',
   },
   connections: {
-    connections: '/connections',
+    spotifyConnection: '/spotify/auth/login',
+    checkSpotifyConnection: '/spotify/checkToken',
   },
 } as const;
