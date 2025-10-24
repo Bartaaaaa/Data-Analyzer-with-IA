@@ -1,7 +1,7 @@
 export const API_ROUTES = {
   auth: {
-    login: '/login',
-    register: '/register',
+    login: '/auth/login',
+    register: '/auth/register',
     checkAuth: '/auth/checkAuth',
     token: '/token',
   },
@@ -14,6 +14,6 @@ export const API_ROUTES = {
   },
   connections: {
     spotifyConnection: '/spotify/auth/login',
-    checkSpotifyConnection: '/spotify/checkToken',
+    checkSpotifyConnection: '/spotify/auth/checkToken',
   },
 } as const;
