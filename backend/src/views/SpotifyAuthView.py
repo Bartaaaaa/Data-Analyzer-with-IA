@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from src.models.SpotifyTokenModel import SpotifyToken
 from rest_framework import permissions
+from drf_spectacular.utils import extend_schema
 
 
 CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
@@ -21,7 +22,6 @@ headers = {
     "Authorization": f"Basic {auth_header}",
     "Content-Type": "application/x-www-form-urlencoded",
 }
-
 
 def refresh_spotify_token(user):
     try:
@@ -47,7 +47,7 @@ def refresh_spotify_token(user):
 
     return token.access_token
 
-
+@extend_schema(tags=['SpotifyAuth'])
 class SpotifyLoginView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -67,7 +67,7 @@ class SpotifyLoginView(APIView):
         url = "https://accounts.spotify.com/authorize?" + urlencode(params)
         return HttpResponseRedirect(url)
 
-
+@extend_schema(tags=['SpotifyAuth'])
 class SpotifyCallbackView(APIView):
     permission_classes = [permissions.AllowAny]
 
@@ -107,7 +107,7 @@ class SpotifyCallbackView(APIView):
         frontend = "http://localhost:4200/connections"
         return HttpResponseRedirect(f"{frontend}?spotify_connected=1")
 
-
+@extend_schema(tags=['SpotifyAuth'])
 class SpotifyCheckTokenView(APIView):
     def get(self, request):
         user = request.user

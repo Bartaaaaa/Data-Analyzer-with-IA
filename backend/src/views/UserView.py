@@ -1,15 +1,15 @@
 # src/views/user_views.py
-from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework import status
 from ..serializers.UserSerializer import UserSerializer
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema
 
-class UserCreateView(generics.CreateAPIView):
-    serializer_class = UserSerializer
+@extend_schema(tags=['User'])
+class CurrentUserView(APIView):
+    permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            self.perform_create(serializer)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request):
+        print(request.user)
+        serializer = UserSerializer(request.user)
+        return Response(serializer.data)
