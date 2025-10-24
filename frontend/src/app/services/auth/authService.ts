@@ -26,7 +26,7 @@ export class AuthService {
 
   login(login: LoginRequest) {
     return this.http
-      .post<{ access: string }>(`${this.apiBase}${API_ROUTES.auth.token}`, login, {
+      .post<{ access: string }>(`${this.apiBase}${API_ROUTES.auth.login}`, login, {
         responseType: 'json',
       })
       .pipe(

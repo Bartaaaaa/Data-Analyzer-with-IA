@@ -3,10 +3,9 @@ export const API_ROUTES = {
     login: '/auth/login',
     register: '/auth/register',
     checkAuth: '/auth/checkAuth',
-    token: '/token',
   },
   user: {
-    getMe: '/user',
+    getMe: '/users/me',
     changeEmail: '/user/email',
   },
   demo: {
