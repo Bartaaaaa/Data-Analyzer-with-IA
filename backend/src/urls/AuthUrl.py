@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import (
 from drf_spectacular.utils import extend_schema, extend_schema_view
 urlpatterns = [
     path('register', UserCreateView.as_view(), name='user-register'),
-    path('token',
+    path('login',
          extend_schema_view(
              post=extend_schema(
                  summary="1. Obtenir un token JWT (Login)",
