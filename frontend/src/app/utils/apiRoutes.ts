@@ -15,4 +15,7 @@ export const API_ROUTES = {
     spotifyConnection: '/spotify/auth/login',
     checkSpotifyConnection: '/spotify/auth/checkToken',
   },
+  spotify: {
+    topArtists: '/spotify/userdata/topArtists',
+  },
 } as const;

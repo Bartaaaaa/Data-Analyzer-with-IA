@@ -4,7 +4,7 @@ import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { API_BASE_URL } from '../config/apiBaseUrlToken';
 import { API_ROUTES } from '../utils/apiRoutes';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
+import { topArtistsResponse } from '../models/spotify/topArtistsResponse';
 @Injectable({ providedIn: 'root' })
 export class SpotifyService {
   private http = inject(HttpClient);
@@ -25,5 +25,11 @@ export class SpotifyService {
     return new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
+  }
+
+  // DATA API
+
+  getTopArtists(): Observable<topArtistsResponse> {
+    return this.http.get<topArtistsResponse>(`${this.apiBase}${API_ROUTES.spotify.topArtists}`, {});
   }
 }

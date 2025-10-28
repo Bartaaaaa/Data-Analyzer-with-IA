@@ -12,12 +12,6 @@ export class UserService {
   token = localStorage.getItem('token');
 
   getMyData(): Observable<UserResponse> {
-    const token = localStorage.getItem('access_token');
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
-    return this.http.get<UserResponse>(`${this.apiBase}${API_ROUTES.user.getMe}`, { headers });
+    return this.http.get<UserResponse>(`${this.apiBase}${API_ROUTES.user.getMe}`);
   }
 }

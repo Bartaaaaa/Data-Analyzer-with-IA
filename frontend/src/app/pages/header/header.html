@@ -10,12 +10,7 @@
       <a routerLink="/connections" routerLinkActive="active">Connections</a>
       <a routerLink="/settings" routerLinkActive="active">Settings</a>
     </nav>
-    <div
-      class="avatar"
-      (mouseenter)="hover = true"
-      (mouseleave)="hover = false"
-      (click)="redirect()"
-    >
+    <div class="avatar" (click)="redirect()">
       <img src="assets/img/default-icon.jpg" alt="Avatar" class="avatar-img" />
       <div class="overlay" *ngIf="hover"></div>
     </div>

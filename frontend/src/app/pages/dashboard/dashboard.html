@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Data Tracker Dashboard</title>
+
+    <!-- Fonts / Icons -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="root">
+      <div class="layout-container">
+        <!-- Header -->
+
+        <!-- Content -->
+        <main class="content-wrap" role="main">
+          <div class="content">
+            <div class="grid" aria-live="polite">
+              <!-- Spotify card -->
+              <div class="card">
+                <div
+                  class="media"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhmsh9MvAFucR9MlBgWtEUy0k92floxT-BkO9DPkN_IuBvf4LzoN0Htqxq5NoGqu41auJUSpdTnNy_54nBnZZylvpv-gzwHSvsASw_4Apy8Gjh9suK1L4D0VbqFJS2egxsM37zggOCxI1JwFwLDxbi1oNbkjYq815EAt0maB0qQOdkWI5yWMvzkrz26f9uWFXLcrA0AgsOsBS6vbSauotamltPedmvN7gsC1Ze1YPsMGcXMENexWw4UySiA5OGMEKtun9Sh2fv0po');
+                  "
+                  (click)="spotifyRedirect()"
+                ></div>
+                <div>
+                  <h3>Spotify</h3>
+                </div>
+              </div>
+
+              <!-- Strava card -->
+              <div class="card">
+                <div
+                  class="media"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB69rmgkzK5psUmieRW_oZhXkANkTOWDBgqqRz8bN0NeVml752cmKQ9fyN0ejIABUVZJqgoGaLvaE8Em5YKm32F_E5jh0X3YSzsNUJw8qnoKSqQkiWLcyJvzSNVI6-PbrBSqjqmysKEy_hOavPl-dzXHLbhoWHByZgneKqQ-Q3a-pDft6hY8b8bHuhzo-BZ8vP7qaaNObQKRjtrLy-0Lw7xbSI2FfkPR3r3toBNqq8VyLevT720wUidp5zVBaCEGivbUa018FVyGhk');
+                  "
+                ></div>
+                <div>
+                  <h3>Strava</h3>
+                </div>
+              </div>
+
+              <!-- Apple Health card -->
+              <div class="card">
+                <div
+                  class="media"
+                  style="
+                    background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqgfG77ltN4TFXpDyGGAlsqxrJjbx896Yg4crBH6G5ZCCU6F6oCzVZtmO-U24Q76-yy8wzmbWkCnd7HP2t8MuxG6R4pO6-kQXIPplwddrF-As-54PpxogWY-Trxr0G-nXu8d4vSiebjGBlvUFAc-6F3G45n1c5M0U9gJfaoKY9sQV4V8H4q3GctU7tEK-3JCZ4AZu4srWqDgFqmmiSVKffz9eVMuqjvP2Hmz0d7-TwlZa7WrUEJlp2Rg-VU7opv9eFb2ObMuPTsSI');
+                  "
+                ></div>
+                <div>
+                  <h3>Apple Health</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
