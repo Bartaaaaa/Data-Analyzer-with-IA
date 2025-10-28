@@ -55,6 +55,18 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    # Make access token valid for 1 day
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+
+    # Keep refresh token longer (optional)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+
+    'ROTATE_REFRESH_TOKENS': True,  # optional but recommended
+    'BLACKLIST_AFTER_ROTATION': True,  # optional but recommended
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,7 +78,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
 ]
@@ -155,8 +167,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
         'Bearer': {
-            'type': 'http',       # <-- http au lieu de apiKey
-            'scheme': 'bearer',   # <-- indique qu’on veut un Bearer token
+            'type': 'http',
+            'scheme': 'bearer',
             'bearerFormat': 'JWT',
             'description': 'JWT Authorization header using the Bearer scheme. Example: "Bearer <token>"',
         }
