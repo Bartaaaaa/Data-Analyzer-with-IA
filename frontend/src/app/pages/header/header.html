@@ -1,19 +1,23 @@
-<div class="layout">
-  <header class="header">
-    <div class="logo-section">
-      <div class="logo"></div>
-      <h2>Data Tracker</h2>
-    </div>
+<header class="header">
+  <div class="logo-section">
+    <div class="logo"></div>
+    <h2>Data Tracker</h2>
+  </div>
+
+  <div class="right-section">
     <nav class="nav-links">
-      <a href="#">Dashboard</a>
-      <a href="connections" class="active">Connections</a>
-      <a href="#">Settings</a>
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/connections" routerLinkActive="active">Connections</a>
+      <a routerLink="/settings" routerLinkActive="active">Settings</a>
     </nav>
     <div
-      class="user-avatar"
-      style="
-        background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDTPFumBMuBGS8j4k8omaoAJ_DRqqX-_X3ThIekGr2TUbTJCwhEtKkigmcFl1tMCYoqQRPq99Z7AzPKDa_DtEujMcPndVDY5tYG7lk1ZqRW-91uwhtd_J0Tn3YAceXqFeJKyVaJbcpxZvQVHA_jwHJrrjQIXQPFTqCdRB1Riuohl8PRB1U0YC9c9MrOK4WdkcY8jdAQHhEncZkSV3BiNVbUULKe22x706uwKalZsax03eQb4_qM2bbFpN8IjCa2Fz7ZDxpnNZOJ5-U');
-      "
-    ></div>
-  </header>
-</div>
+      class="avatar"
+      (mouseenter)="hover = true"
+      (mouseleave)="hover = false"
+      (click)="redirect()"
+    >
+      <img src="assets/img/default-icon.jpg" alt="Avatar" class="avatar-img" />
+      <div class="overlay" *ngIf="hover"></div>
+    </div>
+  </div>
+</header>

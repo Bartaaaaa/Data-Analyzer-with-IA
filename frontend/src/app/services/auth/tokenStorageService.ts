@@ -4,15 +4,19 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class TokenStorage {
-  private key = 'access_token';
+  private accessKey = 'access_token';
+  private refreshKey = 'refresh_token';
 
   get token(): string | null {
-    return localStorage.getItem(this.key);
+    return localStorage.getItem(this.accessKey);
   }
-  setToken(token: string) {
-    localStorage.setItem(this.key, token);
+  setAccessToken(token: string) {
+    localStorage.setItem(this.accessKey, token);
+  }
+  setRefreshToken(token: string) {
+    localStorage.setItem(this.refreshKey, token);
   }
   clear() {
-    localStorage.removeItem(this.key);
+    localStorage.removeItem(this.accessKey);
   }
 }

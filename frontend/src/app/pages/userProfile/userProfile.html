@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Settings</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div>
+      <aside>
+        <div>
+          <nav>
+            <a href="#profile">
+              <span class="material-symbols-outlined">person</span>
+              <p>Profile</p>
+            </a>
+            <a href="connections">
+              <span class="material-symbols-outlined">app_registration</span>
+              <p>Connected Apps</p>
+            </a>
+          </nav>
+        </div>
+        <div>
+          <div>
+            <span class="material-symbols-outlined">logout</span>
+            <p>Logout</p>
+          </div>
+        </div>
+      </aside>
+      <main>
+        <div>
+          <div></div>
+          <div id="profile">
+            <h2>Your Profile</h2>
+            <div>
+              <div></div>
+              <div>
+                <label>
+                  <p>Full Name</p>
+                  <div *ngIf="user()">
+                    <input [ngModel]="user()?.username" />
+                  </div>
+                </label>
+
+                <label>
+                  <p>Email Address</p>
+                  <input readonly="" />
+                </label>
+              </div>
+              <div>
+                <button>Save Changes</button>
+              </div>
+            </div>
+          </div>
+          <div id="connected-apps">
+            <h2>Connected Applications</h2>
+            <p>Manage the services you've linked to your account.</p>
+            <div>
+              <ul>
+                <li>
+                  <div>
+                    <img
+                      alt="Spotify Logo"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC39apcne49V6ZK7dcc4_UkdLKe_tMDpzu_c-YCA-kESKCmOK_hGBqUkWCO59umorqB4g__SZfkqjqKDn4kZU4wA4v2YuBG3jDK69cwObz_vuC_fGWkaFsESubk2g22obl_8nBwxOqoxPCz_xVLTF5pO8BoM_oIlogKa3kXFQNlOJAYIyl88E5wGXOFd5QpXgm5XgnRYRvPF6_dSc3zSIbiAAau7VCSu0gesd8-UW3V-Jjdz6P_js5Vcf_swZsxM6qmDtgHraKvprU"
+                    />
+                    <div>
+                      <p>Spotify</p>
+                      <p>Connected</p>
+                    </div>
+                  </div>
+                  <button>Disconnect</button>
+                </li>
+                <li>
+                  <div>
+                    <img
+                      alt="Strava Logo"
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF7sEBAssbHk4hahy6xGtCz2H5dF3r7IEZOsJQsojIMhRIfMGYa2_1JjRMj83gxV0yFAHPGgugEIk5Iw6vQee6xpuqYNIWICaCoEGz7QchYvvFOgX2FM9n1x2qeSlZGSsDr_Hnv0f4PPSSLKIX-4kE7nqldu6EQQrbeUbkkZdrmgQmeonmrWBw94_0mHsdnplC71GfmDj1lzfUShB3ZGTQfiGlwJzmv6gghtAx7tXLAtU2dPZLzEvaIKaDHGFCFr_bHGPGbhyGGKA"
+                    />
+                    <div>
+                      <p>Strava</p>
+                      <p>Connected</p>
+                    </div>
+                  </div>
+                  <button>Disconnect</button>
+                </li>
+              </ul>
+              <div>
+                <button>Connect New App</button>
+              </div>
+            </div>
+          </div>
+          <div id="data-privacy">
+            <h2>Data & Privacy</h2>
+            <div>
+              <div>
+                <p>Download a copy of your data.</p>
+                <button>Download My Data</button>
+              </div>
+              <div>
+                <p>Permanently delete your account and all data.</p>
+                <button>Delete My Account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

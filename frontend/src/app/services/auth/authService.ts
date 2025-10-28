@@ -26,11 +26,11 @@ export class AuthService {
 
   login(login: LoginRequest) {
     return this.http
-      .post<{ access: string }>(`${this.apiBase}${API_ROUTES.auth.login}`, login, {
+      .post<{ access: string; refresh: string }>(`${this.apiBase}${API_ROUTES.auth.login}`, login, {
         responseType: 'json',
       })
       .pipe(
-        tap((response) => this.setToken(response.access)),
+        tap((response) => this.setToken(response.access, response.refresh)),
         catchError((err) => {
           this.isAuthenticated.set(false);
           return throwError(() => err);
@@ -38,8 +38,9 @@ export class AuthService {
       );
   }
 
-  setToken(token: string) {
-    this.store.setToken(token);
+  setToken(accessToken: string, refreshToken: string) {
+    this.store.setAccessToken(accessToken);
+    this.store.setRefreshToken(refreshToken);
     this.isAuthenticated.set(true);
   }
 
