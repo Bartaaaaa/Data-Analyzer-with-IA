@@ -16,6 +16,7 @@ urlpatterns = [
 
     # SPOTIFY RELATED PATH #
     path('api/spotify/auth/', include('src.urls.SpotifyAuthUrl')),
+    path('api/spotify/userdata/', include('src.urls.SpotifyUserDataUrl')),
 
     # Swagger
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),

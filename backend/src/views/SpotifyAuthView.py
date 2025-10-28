@@ -1,6 +1,4 @@
 # src/views/SpotifyView.py
-import os
-import base64
 import requests
 from urllib.parse import urlencode
 from django.http import HttpResponseRedirect, JsonResponse
@@ -11,41 +9,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from src.models.SpotifyTokenModel import SpotifyToken
 from rest_framework import permissions
 from drf_spectacular.utils import extend_schema
-
-
-CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
-CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
-REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
-
-auth_header = base64.b64encode(f"{CLIENT_ID}:{CLIENT_SECRET}".encode()).decode()
-headers = {
-    "Authorization": f"Basic {auth_header}",
-    "Content-Type": "application/x-www-form-urlencoded",
-}
-
-def refresh_spotify_token(user):
-    try:
-        token = SpotifyToken.objects.get(user=user)
-    except SpotifyToken.DoesNotExist:
-        return None
-
-    data = {
-        "grant_type": "refresh_token",
-        "refresh_token": token.refresh_token,
-    }
-
-    token_url = "https://accounts.spotify.com/api/token"
-    r = requests.post(token_url, headers=headers, data=data, verify=False)
-
-    if r.status_code != 200:
-        return None
-
-    new_token = r.json()
-    token.access_token = new_token['access_token']
-    token.expires_at = timezone.now() + timedelta(seconds=new_token['expires_in'])
-    token.save()
-
-    return token.access_token
+from src.utils.Spotify.SpotifyTokenHelper import SpotifyTokenMixin
+from src.utils.Spotify.SpotifySettings import HEADERS, AUTH_HEADER, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
 
 @extend_schema(tags=['SpotifyAuth'])
 class SpotifyLoginView(APIView):
@@ -74,7 +39,6 @@ class SpotifyCallbackView(APIView):
     def get(self, request):
         code = request.GET.get("code")
         jwt_token = request.GET.get("state")
-
         jwt_auth = JWTAuthentication()
         try:
             validated_token = jwt_auth.get_validated_token(jwt_token)
@@ -89,7 +53,7 @@ class SpotifyCallbackView(APIView):
         }
 
         token_url = "https://accounts.spotify.com/api/token"
-        r = requests.post(token_url, headers=headers, data=data, verify=False)
+        r = requests.post(token_url, headers=HEADERS, data=data, verify=False)
 
         if r.status_code != 200:
             return JsonResponse({"error": "token request failed"}, status=400)
@@ -111,12 +75,9 @@ class SpotifyCallbackView(APIView):
 class SpotifyCheckTokenView(APIView):
     def get(self, request):
         user = request.user
-        try:
-            token = SpotifyToken.objects.get(user=user)
-        except SpotifyToken.DoesNotExist:
-            return JsonResponse({"connected": False})
+        token_helper = SpotifyTokenMixin()
+        access_token = token_helper.getValidSpotifyToken(user)
 
-        if token.expires_at < timezone.now():
-            refresh_spotify_token(user)
-
-        return JsonResponse({"connected": True})
+        if access_token:
+            return True
+        return False
