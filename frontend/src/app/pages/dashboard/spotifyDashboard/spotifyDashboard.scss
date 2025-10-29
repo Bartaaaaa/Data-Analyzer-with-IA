@@ -77,7 +77,6 @@ body {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr;
   gap: 1.5rem;
 
   @media (min-width: 1024px) {
@@ -91,7 +90,6 @@ body {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     transition: box-shadow 0.2s;
 
     &:hover {
@@ -167,31 +165,15 @@ body {
       }
     }
 
-    &.genre-distribution {
+    .card.genre-distribution {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      align-items: center; // ✅ centre le donut + la légende
 
       canvas {
-        max-width: 200px;
+        width: 100%;
+        max-width: 300px; // tu peux augmenter à 500px si tu veux un donut plus large
         margin: 1rem 0;
-      }
-
-      .legend {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
-        font-size: 0.875rem;
-
-        .dot {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          display: inline-block;
-          margin-right: 0.5rem;
-        }
       }
     }
   }

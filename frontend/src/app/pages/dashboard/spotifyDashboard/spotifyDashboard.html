@@ -14,31 +14,25 @@
 
         <!-- Dashboard Grid -->
         <div class="dashboard-grid">
-          <!-- Top Artists -->
           <div class="card top-artists">
             <h3>Top 10 Artists</h3>
-            <ul class="rank-list">
-              <li>
-                <span class="rank">1</span>
-                <img
-                  src="https://i.scdn.co/image/ab6761610000e5eb1b0f4a6cb70ebdcbf1dfb69a"
-                  alt="Glass Animals"
-                />
-                <div class="info">
-                  <p class="name">Glass Animals</p>
-                  <p class="plays">1,234 plays</p>
-                </div>
-              </li>
-              <li>
-                <span class="rank">2</span>
-                <img src="https://i.scdn.co/image/ab6761610000e5ebad8cc0" alt="Tame Impala" />
-                <div class="info">
-                  <p class="name">Tame Impala</p>
-                  <p class="plays">1,002 plays</p>
-                </div>
-              </li>
-            </ul>
-            <a href="#">View All Artists</a>
+
+            <ng-container *ngIf="topArtists(); else loading">
+              <ul class="rank-list">
+                <li *ngFor="let artist of topArtists()?.top_artists; let i = index">
+                  <span class="rank">{{ i + 1 }}</span>
+                  <img [src]="artist.image" [alt]="artist.name" />
+                  <div class="info">
+                    <p class="name">{{ artist.name }}</p>
+                    <p class="plays">Popularité : {{ artist.popularity }}</p>
+                  </div>
+                </li>
+              </ul>
+            </ng-container>
+
+            <ng-template #loading>
+              <p>Chargement des artistes...</p>
+            </ng-template>
           </div>
 
           <!-- Top Tracks -->
@@ -77,37 +71,13 @@
           <div class="card genre-distribution">
             <h3>Listening by Genre</h3>
             <canvas id="genreDonut"></canvas>
+
             <div class="legend">
-              <span><span class="dot" style="background: #1db954"></span> Indie Pop</span>
-              <span><span class="dot" style="background: #ff6b6b"></span> Rock</span>
-              <span><span class="dot" style="background: #ffd93d"></span> Electronic</span>
+              <ng-container *ngIf="topArtists()"> </ng-container>
             </div>
           </div>
         </div>
       </main>
     </div>
-
-    <!-- Chart.js (pour le donut) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-      const ctx = document.getElementById('genreDonut').getContext('2d');
-      new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Indie Pop', 'Rock', 'Electronic'],
-          datasets: [
-            {
-              data: [45, 30, 25],
-              backgroundColor: ['#1DB954', '#FF6B6B', '#FFD93D'],
-              borderWidth: 0,
-            },
-          ],
-        },
-        options: {
-          cutout: '70%',
-          plugins: { legend: { display: false } },
-        },
-      });
-    </script>
   </body>
 </html>
