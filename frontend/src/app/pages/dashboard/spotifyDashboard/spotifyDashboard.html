@@ -6,13 +6,12 @@
         <!-- Filters -->
         <div class="filters">
           <button class="filter active">
-            Last 30 Days <span class="material-symbols-outlined">expand_more</span>
+            Last weeks <span class="material-symbols-outlined"></span>
           </button>
-          <button class="filter">Last 7 Days</button>
+          <button class="filter">Last months</button>
           <button class="filter">All Time</button>
         </div>
 
-        <!-- Dashboard Grid -->
         <div class="dashboard-grid">
           <div class="card top-artists">
             <h3>Top 10 Artists</h3>
@@ -20,12 +19,14 @@
             <ng-container *ngIf="topArtists(); else loading">
               <ul class="rank-list">
                 <li *ngFor="let artist of topArtists()?.top_artists; let i = index">
-                  <span class="rank">{{ i + 1 }}</span>
-                  <img [src]="artist.image" [alt]="artist.name" />
-                  <div class="info">
-                    <p class="name">{{ artist.name }}</p>
-                    <p class="plays">Popularité : {{ artist.popularity }}</p>
-                  </div>
+                  <span class="rank">{{ i + 1 }}</span
+                  ><a [href]="artist.spotify_url" target="_blank">
+                    <img [src]="artist.image" [alt]="artist.name" />
+                    <div class="info">
+                      <p class="name">{{ artist.name }}</p>
+                      <p class="plays">Popularité : {{ artist.popularity }}</p>
+                    </div></a
+                  >
                 </li>
               </ul>
             </ng-container>
@@ -36,35 +37,27 @@
           </div>
 
           <!-- Top Tracks -->
-          <div class="card top-tracks">
-            <h3>Top 10 Tracks</h3>
-            <ul class="rank-list">
-              <li>
-                <span class="rank">1</span>
-                <img
-                  src="https://i.scdn.co/image/ab67616d0000b273b48e4d2f33f2fca9c9e4f9a3"
-                  alt="Heat Waves"
-                />
-                <div class="info">
-                  <p class="name">Heat Waves</p>
-                  <p class="artist">Glass Animals</p>
-                </div>
-                <span class="plays">432 plays</span>
-              </li>
-              <li>
-                <span class="rank">2</span>
-                <img
-                  src="https://i.scdn.co/image/ab67616d0000b2731f712a4ef7d2a62aa274c7e6"
-                  alt="The Less I Know the Better"
-                />
-                <div class="info">
-                  <p class="name">The Less I Know the Better</p>
-                  <p class="artist">Tame Impala</p>
-                </div>
-                <span class="plays">389 plays</span>
-              </li>
-            </ul>
-            <a href="#">View All Tracks</a>
+          <div class="card top-artists">
+            <h3>Top 10 tracks</h3>
+
+            <ng-container *ngIf="topTracks(); else loading">
+              <ul class="rank-list">
+                <li *ngFor="let track of topTracks()?.top_tracks; let i = index">
+                  <a [href]="track.spotify_url" target="_blank">
+                    <span class="rank">{{ i + 1 }}</span>
+                    <img [src]="track.image" [alt]="track.name" />
+                    <div class="info">
+                      <p class="name">{{ track.name }}</p>
+                      <p class="plays">Popularité : {{ track.popularity }}</p>
+                    </div></a
+                  >
+                </li>
+              </ul>
+            </ng-container>
+
+            <ng-template #loading>
+              <p>Chargement des tracks...</p>
+            </ng-template>
           </div>
 
           <!-- Genre Distribution -->
@@ -74,6 +67,33 @@
 
             <div class="legend">
               <ng-container *ngIf="topArtists()"> </ng-container>
+            </div>
+          </div>
+
+          <div>
+            <h3>Top listened Albums</h3>
+
+            <div class="album-grid">
+              <div class="album-card" *ngFor="let track of topAlbums()?.top_tracks">
+                <a [href]="track.album_url" target="_blank">
+                  <img [src]="track.image" [alt]="track.name" />
+
+                  <div class="overlay">
+                    <div class="info"></div>
+                    <div class="play-button">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="white"
+                        width="16"
+                        height="16"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>

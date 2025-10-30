@@ -17,5 +17,6 @@ export const API_ROUTES = {
   },
   spotify: {
     topArtists: '/spotify/userdata/topArtists',
+    topTracks: '/spotify/userdata/topTracks',
   },
 } as const;

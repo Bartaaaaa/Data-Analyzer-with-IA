@@ -7,6 +7,7 @@ import { topArtistsResponse } from '../../../models/spotify/topArtistsResponse';
 import Chart from 'chart.js/auto';
 import { Colors, Tooltip } from 'chart.js';
 import autocolors from 'chartjs-plugin-autocolors';
+import { topTracksResponse } from '../../../models/spotify/topTracksResponse';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -21,12 +22,14 @@ export class SpotifyDashboard {
   loading = signal(false);
   error = signal<string | null>(null);
   topArtists = signal<topArtistsResponse | null>(null);
+  topTracks = signal<topTracksResponse | null>(null);
+  topAlbums = signal<topTracksResponse | null>(null);
   isSpotifyConnected = false;
   spotifyToken = signal<string | null>(null);
   ngOnInit() {
     this.spotifyService.getTopArtists().subscribe({
       next: (response) => {
-        this.topArtists.set(response); // ✅ on stocke juste le tableau
+        this.topArtists.set(response);
         this.topArtists()!.top_artists.forEach((artist) => {
           artist.genres = artist.genres.map((genre) => {
             return this.capitalizeFirstLetter(genre);
@@ -35,7 +38,31 @@ export class SpotifyDashboard {
         this.updateGenreChart();
       },
     });
+
+    this.spotifyService.getTopTracks(10, 'medium_term', 10).subscribe({
+      next: (response) => {
+        this.topTracks.set(response);
+      },
+    });
+
+    // Récupérer 16 albums différents :
+    this.spotifyService.getTopTracks(50).subscribe({
+      next: (response) => {
+        console.log(response);
+        const seenAlbums = new Set<string>();
+        const uniqueTracks = response.top_tracks.filter((track) => {
+          if (seenAlbums.has(track.album_id) || track.album_type !== 'album') {
+            return false;
+          }
+          seenAlbums.add(track.album_id);
+          return true;
+        });
+        this.topAlbums.set({ top_tracks: uniqueTracks.slice(0, 16) });
+      },
+    });
   }
+
+  // DOUGHNUT CODE :
 
   updateGenreChart() {
     if (!this.topArtists) return;
@@ -48,7 +75,7 @@ export class SpotifyDashboard {
         genreRealSize += 1;
       });
     });
-    console.log(genreRealSize);
+
     const data = Object.values(genreCount);
     const canvas = document.getElementById('genreDonut') as HTMLCanvasElement;
 
@@ -75,11 +102,11 @@ export class SpotifyDashboard {
             enabled: false,
           },
           legend: {
-            position: 'bottom', // la légende en bas
-            align: 'center', // centrer les éléments
-            fullSize: true, // prend toute la largeur du canvas
+            position: 'bottom',
+            align: 'center',
+            fullSize: true,
             labels: {
-              usePointStyle: true, // ronds à la place des carrés
+              usePointStyle: true,
               pointStyle: 'circle',
               boxWidth: 12,
               padding: 20,

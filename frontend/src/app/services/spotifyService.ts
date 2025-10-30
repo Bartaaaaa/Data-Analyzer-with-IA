@@ -1,10 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/apiBaseUrlToken';
 import { API_ROUTES } from '../utils/apiRoutes';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { topArtistsResponse } from '../models/spotify/topArtistsResponse';
+import { topTracksResponse } from '../models/spotify/topTracksResponse';
 @Injectable({ providedIn: 'root' })
 export class SpotifyService {
   private http = inject(HttpClient);
@@ -29,7 +29,16 @@ export class SpotifyService {
 
   // DATA API
 
-  getTopArtists(): Observable<topArtistsResponse> {
-    return this.http.get<topArtistsResponse>(`${this.apiBase}${API_ROUTES.spotify.topArtists}`, {});
+  getTopArtists(limit = 10, timeRange = 'medium_term'): Observable<topArtistsResponse> {
+    return this.http.get<topArtistsResponse>(
+      `${this.apiBase}${API_ROUTES.spotify.topArtists}?limit=${limit}&time_range=${timeRange}`,
+      {}
+    );
+  }
+  getTopTracks(limit = 10, timeRange = 'medium_term', offset = 0): Observable<topTracksResponse> {
+    return this.http.get<topTracksResponse>(
+      `${this.apiBase}${API_ROUTES.spotify.topTracks}?limit=${limit}&time_range=${timeRange}&offset=${offset}`,
+      {}
+    );
   }
 }
