@@ -3,13 +3,38 @@
   <body>
     <div class="app">
       <main class="main">
-        <!-- Filters -->
         <div class="filters">
-          <button class="filter active">
-            Last weeks <span class="material-symbols-outlined"></span>
+          <button
+            class="filter"
+            [class.active]="filter() === 'long_term'"
+            (click)="updateFilter('long_term')"
+          >
+            <ng-container *ngIf="filter() !== 'long_term' || !isLoading(); else loadingText">
+              All time
+            </ng-container>
           </button>
-          <button class="filter">Last months</button>
-          <button class="filter">All Time</button>
+
+          <button
+            class="filter"
+            [class.active]="filter() === 'medium_term'"
+            (click)="updateFilter('medium_term')"
+          >
+            <ng-container *ngIf="filter() !== 'medium_term' || !isLoading(); else loadingText">
+              Last months
+            </ng-container>
+          </button>
+
+          <button
+            class="filter"
+            [class.active]="filter() === 'short_term'"
+            (click)="updateFilter('short_term')"
+          >
+            <ng-container *ngIf="filter() !== 'short_term' || !isLoading(); else loadingText">
+              Last weeks
+            </ng-container>
+          </button>
+
+          <ng-template #loadingText> <span class="spinner"></span> Loading... </ng-template>
         </div>
 
         <div class="dashboard-grid">

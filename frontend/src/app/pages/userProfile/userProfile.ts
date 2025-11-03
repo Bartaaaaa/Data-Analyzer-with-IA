@@ -4,6 +4,7 @@ import { SpotifyService } from '../../services/spotifyService';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/userService';
 import { UserResponse } from '../../models/user/UserResponse';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +18,8 @@ export class UserProfile {
   private spotifyService = inject(SpotifyService);
   private userService = inject(UserService);
   user = signal<UserResponse | null>(null);
+  private router = inject(Router);
+
   loading = signal(false);
   error = signal<string | null>(null);
 
@@ -40,5 +43,10 @@ export class UserProfile {
   }
   spotifyLogin() {
     this.spotifyService.login();
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigateByUrl('/login');
   }
 }

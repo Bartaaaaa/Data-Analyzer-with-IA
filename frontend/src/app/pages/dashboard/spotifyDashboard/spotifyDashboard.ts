@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import Chart from 'chart.js/auto';
 import { Colors, Tooltip } from 'chart.js';
 import autocolors from 'chartjs-plugin-autocolors';
 import { topTracksResponse } from '../../../models/spotify/topTracksResponse';
+import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -20,50 +21,85 @@ export class SpotifyDashboard {
   private spotifyService = inject(SpotifyService);
 
   loading = signal(false);
+  loadingButton = signal(false);
+  isLoading = signal(false);
+
   error = signal<string | null>(null);
   topArtists = signal<topArtistsResponse | null>(null);
   topTracks = signal<topTracksResponse | null>(null);
   topAlbums = signal<topTracksResponse | null>(null);
+  filter = signal<string>('long_term');
   isSpotifyConnected = false;
   spotifyToken = signal<string | null>(null);
+
+  artistsLoaded = signal(false);
+  tracksLoaded = signal(false);
+  albumsLoaded = signal(false);
+
+  constructor() {
+    effect(() => {
+      if (this.artistsLoaded() && this.tracksLoaded() && this.albumsLoaded()) {
+        this.isLoading.set(false);
+        this.updateGenreChart();
+      }
+    });
+  }
+
   ngOnInit() {
-    this.spotifyService.getTopArtists().subscribe({
+    this.updateFilter(this.filter());
+  }
+
+  updateFilter(filter: string) {
+    this.filter.set(filter);
+    this.isLoading.set(true);
+    this.artistsLoaded.set(false);
+    this.tracksLoaded.set(false);
+    this.albumsLoaded.set(false);
+    this.loadTopArtists(filter);
+    this.loadTopTracks(filter);
+    this.loadTopAlbums(filter);
+  }
+
+  loadTopArtists(filter: string) {
+    this.spotifyService.getTopArtists(filter).subscribe({
       next: (response) => {
         this.topArtists.set(response);
         this.topArtists()!.top_artists.forEach((artist) => {
-          artist.genres = artist.genres.map((genre) => {
-            return this.capitalizeFirstLetter(genre);
-          });
+          artist.genres = artist.genres.map(this.capitalizeFirstLetter);
         });
-        this.updateGenreChart();
+        this.artistsLoaded.set(true);
       },
+      error: () => this.artistsLoaded.set(true),
     });
+  }
 
-    this.spotifyService.getTopTracks(10, 'medium_term', 10).subscribe({
+  loadTopTracks(filter: string) {
+    this.spotifyService.getTopTracks(filter, 10, 10).subscribe({
       next: (response) => {
         this.topTracks.set(response);
+        this.tracksLoaded.set(true);
       },
+      error: () => this.tracksLoaded.set(true),
     });
+  }
 
-    // Récupérer 16 albums différents :
-    this.spotifyService.getTopTracks(50).subscribe({
+  loadTopAlbums(filter: string) {
+    this.spotifyService.getTopTracks(filter, 50).subscribe({
       next: (response) => {
-        console.log(response);
         const seenAlbums = new Set<string>();
         const uniqueTracks = response.top_tracks.filter((track) => {
-          if (seenAlbums.has(track.album_id) || track.album_type !== 'album') {
-            return false;
-          }
+          if (seenAlbums.has(track.album_id) || track.album_type !== 'album') return false;
           seenAlbums.add(track.album_id);
           return true;
         });
         this.topAlbums.set({ top_tracks: uniqueTracks.slice(0, 16) });
+        this.albumsLoaded.set(true);
       },
+      error: () => this.albumsLoaded.set(true),
     });
   }
-
   // DOUGHNUT CODE :
-
+  chart: Chart | null = null;
   updateGenreChart() {
     if (!this.topArtists) return;
     const genreCount: Record<string, number> = {};
@@ -78,8 +114,15 @@ export class SpotifyDashboard {
 
     const data = Object.values(genreCount);
     const canvas = document.getElementById('genreDonut') as HTMLCanvasElement;
+    const labels = Object.keys(genreCount);
 
-    new Chart(canvas, {
+    if (this.chart) {
+      this.chart.data.labels = labels;
+      this.chart.data.datasets[0].data = data;
+      this.chart.update();
+      return;
+    }
+    this.chart = new Chart(canvas, {
       type: 'doughnut',
       data: {
         labels: Object.keys(genreCount), // Assure-toi que les labels sont définis

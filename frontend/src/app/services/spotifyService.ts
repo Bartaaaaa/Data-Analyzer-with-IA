@@ -29,13 +29,13 @@ export class SpotifyService {
 
   // DATA API
 
-  getTopArtists(limit = 10, timeRange = 'medium_term'): Observable<topArtistsResponse> {
+  getTopArtists(timeRange = 'short_term', limit = 10): Observable<topArtistsResponse> {
     return this.http.get<topArtistsResponse>(
       `${this.apiBase}${API_ROUTES.spotify.topArtists}?limit=${limit}&time_range=${timeRange}`,
       {}
     );
   }
-  getTopTracks(limit = 10, timeRange = 'medium_term', offset = 0): Observable<topTracksResponse> {
+  getTopTracks(timeRange = 'short_term', limit = 10, offset = 0): Observable<topTracksResponse> {
     return this.http.get<topTracksResponse>(
       `${this.apiBase}${API_ROUTES.spotify.topTracks}?limit=${limit}&time_range=${timeRange}&offset=${offset}`,
       {}
