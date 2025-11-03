@@ -1,5 +1,4 @@
 # src/views/SpotifyView.py
-import os
 import requests
 from django.http import  JsonResponse
 from rest_framework.views import APIView

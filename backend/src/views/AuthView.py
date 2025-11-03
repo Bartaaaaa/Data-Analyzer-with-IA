@@ -7,7 +7,7 @@ from ..serializers.UserSerializer import UserSerializer
 from drf_spectacular.utils import extend_schema
 
 @extend_schema(tags=['Auth'])
-class UserCreateView(generics.CreateAPIView):
+class UserRegister(generics.CreateAPIView):
     serializer_class = UserSerializer
 
     def post(self, request, *args, **kwargs):
@@ -16,5 +16,4 @@ class UserCreateView(generics.CreateAPIView):
             self.perform_create(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
