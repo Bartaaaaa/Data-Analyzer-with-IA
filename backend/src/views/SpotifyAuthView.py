@@ -20,8 +20,8 @@ class SpotifyLoginView(APIView):
         jwt_token = request.GET.get("jwt")
         if not jwt_token:
             return JsonResponse({"error": "JWT required"}, status=401)
-
-        scopes = "user-top-read user-read-recently-played"
+        #Routes that i can call from spotify
+        scopes = "user-top-read user-read-recently-played user-read-currently-playing user-modify-playback-state"
         params = {
             "response_type": "code",
             "client_id": CLIENT_ID,

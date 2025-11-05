@@ -65,3 +65,107 @@ class SpotifyTopTracks(APIView):
         ]
 
         return JsonResponse({"top_tracks": top_tracks})
+
+@extend_schema(tags=['SpotifyUserData'])
+@extend_schema(tags=['SpotifyUserData'])
+class SpotifyCurrentTrack(APIView):
+    def get(self, request):
+        user = request.user
+        token_helper = SpotifyTokenMixin()
+        access_token = token_helper.getValidSpotifyToken(user)
+        headers = {"Authorization": f"Bearer {access_token}"}
+        url = "https://api.spotify.com/v1/me/player/currently-playing"
+
+        try:
+            spotifyCurrentTrackRequest = requests.get(url, headers=headers, verify=False)
+        except requests.exceptions.RequestException as error:
+            return JsonResponse({"error": str(error)}, status=500)
+
+        if spotifyCurrentTrackRequest.status_code == 204:
+            return JsonResponse({
+                "name": "You are not playing any song at the moment",
+                "artists": [],
+                "image": "image_url",
+                "track_url": "placeholder_url",
+                "progress": 0,
+                "album_name": None,
+                "duration": 0,
+                "timestamp": 0
+            }, status=200)
+
+        if spotifyCurrentTrackRequest.status_code != 200:
+            return JsonResponse({
+                "error": f"Spotify API error {spotifyCurrentTrackRequest.status_code}"
+            }, status=spotifyCurrentTrackRequest.status_code)
+
+        data = spotifyCurrentTrackRequest.json()
+        item = data.get("item")
+        current_track = {
+            "name": item.get("name"),
+            "artists": [artist.get("name") for artist in item.get("artists", [])],
+            "image": item["album"]["images"][0]["url"] if item["album"].get("images") else None,
+            "track_url": item["external_urls"]["spotify"],
+            "progress": data.get("progress_ms", 0),
+            "timestamp": data.get("timestamp", 0),
+            "album_name": item["album"]["name"],
+            "duration": item.get("duration_ms", 0),
+        }
+
+        return JsonResponse(current_track, status=200)
+
+
+@extend_schema(tags=['SpotifyUserData'])
+class SpotifySkipToNext(APIView):
+    def post(self, request):
+        user = request.user
+        token_helper = SpotifyTokenMixin()
+        access_token = token_helper.getValidSpotifyToken(user)
+        headers = {"Authorization": f"Bearer {access_token}"}
+        url = "https://api.spotify.com/v1/me/player/next"
+        try :
+            requests.post(url, headers=headers,verify=False)
+        except requests.exceptions.RequestException as error :
+            return JsonResponse({"error": str(error)})
+
+        return JsonResponse({"error": "The request was successful."}, status=200)
+
+@extend_schema(tags=['SpotifyUserData'])
+class SpotifySkipToPrevious(APIView):
+    def post(self, request):
+        user = request.user
+        token_helper = SpotifyTokenMixin()
+        access_token = token_helper.getValidSpotifyToken(user)
+        headers = {"Authorization": f"Bearer {access_token}"}
+        url = "https://api.spotify.com/v1/me/player/previous"
+        try :
+            requests.post(url, headers=headers,verify=False)
+        except requests.exceptions.RequestException as error :
+            return JsonResponse({"error": str(error)})
+        return JsonResponse({"error": "The request was successful."}, status=200)
+
+
+
+@extend_schema(tags=['SpotifyUserData'])
+class SpotifyPauseTrack(APIView):
+    def put(self, request):
+        user = request.user
+        token_helper = SpotifyTokenMixin()
+        access_token = token_helper.getValidSpotifyToken(user)
+        headers = {"Authorization": f"Bearer {access_token}"}
+        url = "https://api.spotify.com/v1/me/player/pause"
+        requests.put(url, headers=headers,verify=False)
+        return JsonResponse({"message": "Pause du morceau  réussi ✅"}, status=200)
+
+
+@extend_schema(tags=['SpotifyUserData'])
+class SpotifyResumeTrack(APIView):
+    def put(self, request):
+        user = request.user
+        token_helper = SpotifyTokenMixin()
+        access_token = token_helper.getValidSpotifyToken(user)
+        headers = {"Authorization": f"Bearer {access_token}"}
+        url = "https://api.spotify.com/v1/me/player/play"
+        requests.put(url, headers=headers,verify=False)
+        return JsonResponse({"message": "Reprise du morceau  réussi ✅"}, status=200)
+
+
