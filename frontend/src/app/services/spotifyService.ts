@@ -5,6 +5,7 @@ import { API_ROUTES } from '../utils/apiRoutes';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { topArtistsResponse } from '../models/spotify/topArtistsResponse';
 import { topTracksResponse } from '../models/spotify/topTracksResponse';
+import { currentTrackResponse } from '../models/spotify/currentTrackResponse';
 @Injectable({ providedIn: 'root' })
 export class SpotifyService {
   private http = inject(HttpClient);
@@ -40,5 +41,16 @@ export class SpotifyService {
       `${this.apiBase}${API_ROUTES.spotify.topTracks}?limit=${limit}&time_range=${timeRange}&offset=${offset}`,
       {}
     );
+  }
+
+  getCurrentTrack(): Observable<currentTrackResponse> {
+    return this.http.get<currentTrackResponse>(`${this.apiBase}${API_ROUTES.spotify.currentTrack}`);
+  }
+
+  skipNextTrack(): Observable<void> {
+    return this.http.post<void>(`${this.apiBase}${API_ROUTES.spotify.nextTrack}`, null);
+  }
+  skipPreviousTrack(): Observable<void> {
+    return this.http.post<void>(`${this.apiBase}${API_ROUTES.spotify.previousTrack}`, null);
   }
 }

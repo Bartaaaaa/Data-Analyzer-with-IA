@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -8,7 +15,8 @@ import Chart from 'chart.js/auto';
 import { Colors, Tooltip } from 'chart.js';
 import autocolors from 'chartjs-plugin-autocolors';
 import { topTracksResponse } from '../../../models/spotify/topTracksResponse';
-import { forkJoin } from 'rxjs/internal/observable/forkJoin';
+import { currentTrackResponse } from '../../../models/spotify/currentTrackResponse';
+
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -19,6 +27,7 @@ import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 })
 export class SpotifyDashboard {
   private spotifyService = inject(SpotifyService);
+  private cdr = inject(ChangeDetectorRef);
 
   loading = signal(false);
   loadingButton = signal(false);
@@ -28,6 +37,7 @@ export class SpotifyDashboard {
   topArtists = signal<topArtistsResponse | null>(null);
   topTracks = signal<topTracksResponse | null>(null);
   topAlbums = signal<topTracksResponse | null>(null);
+  currentTrack = signal<currentTrackResponse | null>(null);
   filter = signal<string>('long_term');
   isSpotifyConnected = false;
   spotifyToken = signal<string | null>(null);
@@ -47,6 +57,10 @@ export class SpotifyDashboard {
 
   ngOnInit() {
     this.updateFilter(this.filter());
+    this.getCurrentTrack();
+    setInterval(() => {
+      this.getCurrentTrack();
+    }, 30000);
   }
 
   updateFilter(filter: string) {
@@ -61,7 +75,7 @@ export class SpotifyDashboard {
   }
 
   loadTopArtists(filter: string) {
-    this.spotifyService.getTopArtists(filter).subscribe({
+    this.spotifyService.getTopArtists(filter, 5).subscribe({
       next: (response) => {
         this.topArtists.set(response);
         this.topArtists()!.top_artists.forEach((artist) => {
@@ -74,7 +88,7 @@ export class SpotifyDashboard {
   }
 
   loadTopTracks(filter: string) {
-    this.spotifyService.getTopTracks(filter, 10, 10).subscribe({
+    this.spotifyService.getTopTracks(filter, 5, 10).subscribe({
       next: (response) => {
         this.topTracks.set(response);
         this.tracksLoaded.set(true);
@@ -125,7 +139,7 @@ export class SpotifyDashboard {
     this.chart = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: Object.keys(genreCount), // Assure-toi que les labels sont définis
+        labels: Object.keys(genreCount),
         datasets: [
           {
             data: data,
@@ -135,7 +149,9 @@ export class SpotifyDashboard {
         ],
       },
       options: {
-        cutout: '60%',
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '70%',
         animation: {
           animateScale: true,
           animateRotate: true,
@@ -145,30 +161,19 @@ export class SpotifyDashboard {
             enabled: false,
           },
           legend: {
-            position: 'bottom',
-            align: 'center',
-            fullSize: true,
-            labels: {
-              usePointStyle: true,
-              pointStyle: 'circle',
-              boxWidth: 12,
-              padding: 20,
-              font: {
-                size: 14,
-                family: 'Inter, Arial, sans-serif',
-                weight: 'bold',
-              },
-              color: '#333',
-            },
+            display: false,
           },
         },
         layout: {
           padding: {
-            top: 20,
+            top: 10,
             bottom: 10,
+            left: 10,
+            right: 10,
           },
         },
       },
+
       plugins: [
         {
           id: 'centerText',
@@ -204,5 +209,91 @@ export class SpotifyDashboard {
 
   capitalizeFirstLetter(val: string): string {
     return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+  }
+
+  // Spotify Player
+  temp = {
+    name: 'You are currently not listening to any track',
+    artists: ['Artist'],
+    image: 'test',
+    track_url: 'temp',
+    progress: 0,
+    album_name: 'Album name',
+    duration: 0,
+    timestamp: 0,
+  };
+  isPlaying = true;
+
+  progressInterval: any;
+  displayProgress = '0:00';
+  displayDuration = '0:00';
+  currentProgressMs = 0;
+  currentDurationMs = 0;
+
+  getCurrentTrack() {
+    this.spotifyService.getCurrentTrack().subscribe({
+      next: (response) => {
+        if (response.image === 'image_url') {
+          response.image = 'assets/img/album_placeholder.png';
+        }
+        this.currentTrack.set(response);
+        // Réinitialiser les valeurs
+        this.currentProgressMs = response.progress || 0;
+        this.currentDurationMs = response.duration || 0;
+        this.displayProgress = this.formatTime(this.currentProgressMs);
+        this.displayDuration = this.formatTime(this.currentDurationMs);
+
+        // Lancer l'animation locale
+        this.startProgressUpdater();
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération du morceau', err);
+      },
+    });
+  }
+  startProgressUpdater() {
+    if (this.progressInterval) {
+      clearInterval(this.progressInterval);
+      this.progressInterval = null;
+    }
+
+    this.progressInterval = setInterval(() => {
+      if (!this.currentTrack()) return;
+
+      if (this.currentProgressMs < this.currentDurationMs) {
+        this.currentProgressMs += 1000; // +1s
+        this.displayProgress = this.formatTime(this.currentProgressMs);
+        this.cdr.markForCheck(); // forcer Angular à redessiner
+      } else {
+        clearInterval(this.progressInterval);
+      }
+    }, 1000);
+  }
+
+  skipPreviousTrack() {
+    this.spotifyService.skipPreviousTrack().subscribe({
+      next: () => {
+        this.getCurrentTrack();
+      },
+    });
+  }
+
+  skipNextTrack() {
+    this.spotifyService.skipNextTrack().subscribe({
+      next: () => {
+        this.getCurrentTrack();
+      },
+    });
+  }
+
+  get progressPercent(): number {
+    if (!this.currentDurationMs) return 0;
+    return (this.currentProgressMs / this.currentDurationMs) * 100;
+  }
+
+  formatTime(ms: number): string {
+    const minutes = Math.floor(ms / 60000);
+    const seconds = Math.floor((ms % 60000) / 1000);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 }

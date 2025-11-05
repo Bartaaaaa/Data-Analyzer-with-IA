@@ -18,5 +18,8 @@ export const API_ROUTES = {
   spotify: {
     topArtists: '/spotify/userdata/topArtists',
     topTracks: '/spotify/userdata/topTracks',
+    currentTrack: '/spotify/userdata/currentTrack',
+    nextTrack: '/spotify/userdata/skipNextTrack',
+    previousTrack: '/spotify/userdata/skipPreviousTrack',
   },
 } as const;

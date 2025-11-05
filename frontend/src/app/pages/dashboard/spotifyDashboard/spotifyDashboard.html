@@ -38,8 +38,43 @@
         </div>
 
         <div class="dashboard-grid">
+          <div class="card player-container" *ngIf="currentTrack(); else loading">
+            <h3>Currently playing</h3>
+
+            <div class="player-left">
+              <a [href]="currentTrack()?.track_url" target="_blank">
+                <img [src]="currentTrack()?.image" alt="album cover" class="album-cover" />
+              </a>
+
+              <div class="track-info">
+                <h4 class="track-title">{{ currentTrack()?.name }}</h4>
+                <p class="track-artists">{{ currentTrack()?.artists }}</p>
+                <p class="album-name">Album : {{ currentTrack()?.album_name }}</p>
+
+                <div class="progress-container">
+                  <div class="progress-bar" [style.width.%]="progressPercent"></div>
+                </div>
+
+                <div class="time">
+                  <span>{{ displayProgress }}</span>
+                  <span>/{{ displayDuration }}</span>
+                </div>
+
+                <div class="player-center">
+                  <button class="control-btn" (click)="skipPreviousTrack()">
+                    <i class="fas fa-backward"></i>
+                  </button>
+
+                  <button class="control-btn" (click)="skipNextTrack()">
+                    <i class="fas fa-forward"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="card top-artists">
-            <h3>Top 10 Artists</h3>
+            <h3>Top 5 Artists</h3>
 
             <ng-container *ngIf="topArtists(); else loading">
               <ul class="rank-list">
@@ -63,7 +98,7 @@
 
           <!-- Top Tracks -->
           <div class="card top-artists">
-            <h3>Top 10 tracks</h3>
+            <h3>Top 5 tracks</h3>
 
             <ng-container *ngIf="topTracks(); else loading">
               <ul class="rank-list">
@@ -88,10 +123,9 @@
           <!-- Genre Distribution -->
           <div class="card genre-distribution">
             <h3>Listening by Genre</h3>
-            <canvas id="genreDonut"></canvas>
 
-            <div class="legend">
-              <ng-container *ngIf="topArtists()"> </ng-container>
+            <div class="chart-wrapper">
+              <canvas id="genreDonut"></canvas>
             </div>
           </div>
 

@@ -11,5 +11,6 @@ export const routes: Routes = [
   { path: 'connections', component: Connections },
   { path: 'userProfile', component: UserProfile },
   { path: 'dashboard', component: Dashboard },
+  { path: '', component: Dashboard },
   { path: 'spotifyDashboard', component: SpotifyDashboard },
 ];
