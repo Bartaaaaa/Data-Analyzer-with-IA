@@ -39,16 +39,40 @@ $border-color: #e7edf3;
     gap: 2rem;
 
     a {
+      position: relative;
       text-decoration: none;
       color: $text-color;
-      font-weight: 500;
+      font-size: 1.2rem;
+      padding: 0.25rem 0;
+      transition: color 0.25s ease, transform 0.25s ease;
+
+      // Barre animée sous le lien
+      &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 0;
+        height: 2px;
+        background: $primary;
+        transition: width 0.25s ease;
+      }
 
       &.active {
         color: $primary;
+
+        &::after {
+          width: 100%;
+        }
       }
 
       &:hover {
-        text-decoration: underline;
+        color: $primary;
+        transform: translateY(-2px);
+
+        &::after {
+          width: 100%;
+        }
       }
     }
   }

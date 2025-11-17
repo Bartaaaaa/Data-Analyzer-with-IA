@@ -38,7 +38,7 @@
         </div>
 
         <div class="dashboard-grid">
-          <div class="card player-container" *ngIf="currentTrack(); else loading">
+          <div class="card player-container" *ngIf="currentTrack()">
             <h3>Currently playing</h3>
 
             <div class="player-left">
@@ -76,11 +76,10 @@
           <div class="card top-artists">
             <h3>Top 5 Artists</h3>
 
-            <ng-container *ngIf="topArtists(); else loading">
+            <ng-container *ngIf="topArtists()">
               <ul class="rank-list">
                 <li *ngFor="let artist of topArtists()?.top_artists; let i = index">
-                  <span class="rank">{{ i + 1 }}</span
-                  ><a [href]="artist.spotify_url" target="_blank">
+                  <a [href]="artist.spotify_url" target="_blank">
                     <img [src]="artist.image" [alt]="artist.name" />
                     <div class="info">
                       <p class="name">{{ artist.name }}</p>
@@ -90,21 +89,16 @@
                 </li>
               </ul>
             </ng-container>
-
-            <ng-template #loading>
-              <p>Chargement des artistes...</p>
-            </ng-template>
           </div>
 
           <!-- Top Tracks -->
           <div class="card top-artists">
             <h3>Top 5 tracks</h3>
 
-            <ng-container *ngIf="topTracks(); else loading">
+            <ng-container *ngIf="topTracks()">
               <ul class="rank-list">
                 <li *ngFor="let track of topTracks()?.top_tracks; let i = index">
                   <a [href]="track.spotify_url" target="_blank">
-                    <span class="rank">{{ i + 1 }}</span>
                     <img [src]="track.image" [alt]="track.name" />
                     <div class="info">
                       <p class="name">{{ track.name }}</p>
@@ -114,10 +108,6 @@
                 </li>
               </ul>
             </ng-container>
-
-            <ng-template #loading>
-              <p>Chargement des tracks...</p>
-            </ng-template>
           </div>
 
           <!-- Genre Distribution -->

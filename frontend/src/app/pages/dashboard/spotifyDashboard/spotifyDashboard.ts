@@ -6,13 +6,11 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SpotifyService } from '../../../services/spotifyService';
 import { topArtistsResponse } from '../../../models/spotify/topArtistsResponse';
 import Chart from 'chart.js/auto';
-import { Colors, Tooltip } from 'chart.js';
 import autocolors from 'chartjs-plugin-autocolors';
 import { topTracksResponse } from '../../../models/spotify/topTracksResponse';
 import { currentTrackResponse } from '../../../models/spotify/currentTrackResponse';
@@ -22,7 +20,11 @@ import { currentTrackResponse } from '../../../models/spotify/currentTrackRespon
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './spotifyDashboard.html',
-  styleUrls: ['./spotifyDashboard.scss'],
+  styleUrls: [
+    './scss/spotifyDashboard.scss',
+    './scss/spotifyPlayer.scss',
+    './scss/spotifyAlbums.scss',
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SpotifyDashboard {
@@ -112,6 +114,7 @@ export class SpotifyDashboard {
       error: () => this.albumsLoaded.set(true),
     });
   }
+
   // DOUGHNUT CODE :
   chart: Chart | null = null;
   updateGenreChart() {
@@ -151,7 +154,7 @@ export class SpotifyDashboard {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '70%',
+        cutout: '73%',
         animation: {
           animateScale: true,
           animateRotate: true,
