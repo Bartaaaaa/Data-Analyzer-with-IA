@@ -48,6 +48,8 @@ Depuis le dossier **frontend** :
 cd frontend
 npm install
 ng serve --open
+```
+---
 
 ### 3. Installation du backend (Django)
 
