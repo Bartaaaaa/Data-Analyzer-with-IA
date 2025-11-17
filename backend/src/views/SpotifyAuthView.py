@@ -79,5 +79,6 @@ class SpotifyCheckTokenView(APIView):
         access_token = token_helper.getValidSpotifyToken(user)
 
         if access_token:
-            return True
-        return False
+            return JsonResponse({"isConnected": True})
+        return JsonResponse({"isConnected": False})
+
