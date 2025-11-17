@@ -261,9 +261,9 @@ export class SpotifyDashboard {
       if (!this.currentTrack()) return;
 
       if (this.currentProgressMs < this.currentDurationMs) {
-        this.currentProgressMs += 1000; // +1s
+        this.currentProgressMs += 1000;
         this.displayProgress = this.formatTime(this.currentProgressMs);
-        this.cdr.markForCheck(); // forcer Angular à redessiner
+        this.cdr.markForCheck();
       } else {
         clearInterval(this.progressInterval);
       }

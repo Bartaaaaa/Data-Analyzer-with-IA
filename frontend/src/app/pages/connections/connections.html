@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Data Tracker - Connect Accounts</title>
+    <title>DataHub - Connect Accounts</title>
   </head>
 
   <body class="light-theme">
@@ -35,7 +35,7 @@
                 (click)="spotifyLogin()"
                 class="btn primary"
               >
-                {{ isSpotifyConnected ? 'Connected' : 'Connect to Spotify' }}
+                {{ isSpotifyConnected() ? 'Connected' : 'Connect to Spotify' }}
               </button>
             </div>
           </div>

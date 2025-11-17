@@ -22,7 +22,7 @@
               <span class="material-symbols-outlined">person</span>
               <p>Profile</p>
             </a>
-            <a href="connections"> </a>
+            <div></div>
           </nav>
         </div>
         <div>
@@ -42,7 +42,7 @@
               <div>
                 <label>
                   <p>Full Name</p>
-                  <div *ngIf="user()">
+                  <div>
                     <input [ngModel]="user()?.username" />
                   </div>
                 </label>
@@ -54,43 +54,6 @@
               </div>
               <div>
                 <button>Save Changes</button>
-              </div>
-            </div>
-          </div>
-          <div id="connected-apps">
-            <h2>Connected Applications</h2>
-            <p>Manage the services you've linked to your account.</p>
-            <div>
-              <ul>
-                <li>
-                  <div>
-                    <img
-                      alt="Spotify Logo"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuC39apcne49V6ZK7dcc4_UkdLKe_tMDpzu_c-YCA-kESKCmOK_hGBqUkWCO59umorqB4g__SZfkqjqKDn4kZU4wA4v2YuBG3jDK69cwObz_vuC_fGWkaFsESubk2g22obl_8nBwxOqoxPCz_xVLTF5pO8BoM_oIlogKa3kXFQNlOJAYIyl88E5wGXOFd5QpXgm5XgnRYRvPF6_dSc3zSIbiAAau7VCSu0gesd8-UW3V-Jjdz6P_js5Vcf_swZsxM6qmDtgHraKvprU"
-                    />
-                    <div>
-                      <p>Spotify</p>
-                      <p>Connected</p>
-                    </div>
-                  </div>
-                  <button>Disconnect</button>
-                </li>
-                <li>
-                  <div>
-                    <img
-                      alt="Strava Logo"
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF7sEBAssbHk4hahy6xGtCz2H5dF3r7IEZOsJQsojIMhRIfMGYa2_1JjRMj83gxV0yFAHPGgugEIk5Iw6vQee6xpuqYNIWICaCoEGz7QchYvvFOgX2FM9n1x2qeSlZGSsDr_Hnv0f4PPSSLKIX-4kE7nqldu6EQQrbeUbkkZdrmgQmeonmrWBw94_0mHsdnplC71GfmDj1lzfUShB3ZGTQfiGlwJzmv6gghtAx7tXLAtU2dPZLzEvaIKaDHGFCFr_bHGPGbhyGGKA"
-                    />
-                    <div>
-                      <p>Strava</p>
-                      <p>Connected</p>
-                    </div>
-                  </div>
-                  <button>Disconnect</button>
-                </li>
-              </ul>
-              <div>
-                <button>Connect New App</button>
               </div>
             </div>
           </div>

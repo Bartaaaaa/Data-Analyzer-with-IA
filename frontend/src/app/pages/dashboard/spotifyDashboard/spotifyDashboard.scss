@@ -10,7 +10,6 @@ $border-color: #e0e0e0;
 
 body {
   font-family: 'Spline Sans', sans-serif;
-  background-color: $background-light;
   color: $text-primary;
   margin: 0;
 }
@@ -171,8 +170,8 @@ body {
           }
 
           img {
-            width: 90px;
-            height: 90px;
+            width: 80px;
+            height: 80px;
             border-radius: 0.5rem;
             object-fit: cover;
           }

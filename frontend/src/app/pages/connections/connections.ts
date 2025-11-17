@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SpotifyService } from '../../services/spotifyService';
 import { CommonModule } from '@angular/common';
 
@@ -13,27 +12,22 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Connections {
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
   private spotifyService = inject(SpotifyService);
-  private route = inject(ActivatedRoute);
 
-  loading = signal(false);
-  error = signal<string | null>(null);
+  isSpotifyConnected = signal(false);
 
-  isSpotifyConnected = false;
-  spotifyToken = signal<string | null>(null);
   ngOnInit() {
     this.checkSpotifyConnection();
   }
 
   async checkSpotifyConnection() {
-    if (this.spotifyService.checkToken()) {
-      this.isSpotifyConnected = true;
-    } else {
-      this.isSpotifyConnected = false;
-    }
+    this.spotifyService.checkToken().subscribe({
+      next: (response) => {
+        this.isSpotifyConnected.set(response.isConnected);
+      },
+    });
   }
+
   spotifyLogin() {
     this.spotifyService.login();
   }

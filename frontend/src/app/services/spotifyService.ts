@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { topArtistsResponse } from '../models/spotify/topArtistsResponse';
 import { topTracksResponse } from '../models/spotify/topTracksResponse';
 import { currentTrackResponse } from '../models/spotify/currentTrackResponse';
+import { checkTokenResponse } from '../models/spotify/checkTokenResponse';
 @Injectable({ providedIn: 'root' })
 export class SpotifyService {
   private http = inject(HttpClient);
@@ -16,8 +17,8 @@ export class SpotifyService {
     window.location.href = `${this.apiBase}${API_ROUTES.connections.spotifyConnection}?jwt=${token}`;
   }
 
-  checkToken() {
-    return this.http.get<boolean>(
+  checkToken(): Observable<checkTokenResponse> {
+    return this.http.get<checkTokenResponse>(
       `${this.apiBase}${API_ROUTES.connections.checkSpotifyConnection}`
     );
   }
